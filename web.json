@@ -1,5 +1,5 @@
 {
-    "run_list": [ "recipe[main::default]", "recipe[nginx::default]" ],
+    "run_list": [ "recipe[main::default]", "recipe[nginx::default]", "recipe[python::default]" ],
     "user": {
         "default": {
             "username": "manuel",
@@ -7,7 +7,12 @@
         }
     },
    "python": {
-      "virtualenv_name": "django"
+        "virtualenv": {
+          "name": "django",
+          "path": "/home/manuel/.virtualenvs/django-manuel",
+          "owner": "manuel",
+          "group": "manuel"
+        }
   },
   "nginx": {
       "version": "1.2.3",
@@ -52,5 +57,9 @@
             "http_gzip_static_module"
           ]
        }
-   }
+   },
+   "gunicorn":{
+       "listen": 8888,
+       "log_dir": "/var/log/gunicorn"
+    }
 }

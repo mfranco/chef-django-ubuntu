@@ -6,3 +6,10 @@ python_packages.each do |python_package|
     action :run
   end
 end
+
+python_virtualenv 'create_virtualenv' do
+  action 'create'
+  path node['python']['virtualenv']['path']
+  owner node['python']['virtualenv']['owner']
+  group node['python']['virtualenv']['group']
+end

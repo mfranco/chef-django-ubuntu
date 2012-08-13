@@ -35,6 +35,8 @@ Components
 
 4. cookbooks/nginx/ : nginx setup cookbooks
 
+5. cookbooks/python/ : python basic stuff
+
 Usage
 -----
 Web stack:
@@ -46,8 +48,15 @@ Web stack:
 See also
 ---------
 [Chef Solo tutorial: Managing a single server with Chef](http://www.opinionatedprogrammer.com/2011/06/chef-solo-tutorial-managing-a-single-server-with-chef/)
+
 [Complete and official cookbook repository for chef](https://github.com/opscode-cookbooks)
+
+[Python cookbook](https://github.com/opscode-cookbooks/python)
+
 [ngnix cookbook](https://github.com/opscode-cookbooks/nginx)
+
 [gunicorn cookbook](https://github.com/opscode-cookbooks/gunicorn)
+
 [Setting up Django with Green Unicorn, nginx, supervisord and fabric on CentOS 5.5](http://www.kencochrane.net/blog/2011/06/django-gunicorn-nginx-supervisord-fabric-centos55/)
+
 [Deploying Django with nginx and gunicorn](http://honza.ca/2011/05/deploying-django-with-nginx-and-gunicorn)
