@@ -44,7 +44,6 @@ end
 def load_current_resource
   @current_resource = Chef::Resource::PythonVirtualenv.new(@new_resource.name)
   @current_resource.path(@new_resource.path)
-  puts 'loadddddddddddddddddddddddd'
   if exists?
     cstats = ::File.stat(@current_resource.path)
     @current_resource.owner(cstats.uid)

@@ -37,6 +37,8 @@ Components
 
 5. cookbooks/python/ : python basic stuff
 
+6. cookbooks/gunicorn/ : gunicorn install and configuration
+
 Usage
 -----
 Web stack:

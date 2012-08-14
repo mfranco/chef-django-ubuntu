@@ -1,5 +1,5 @@
 {
-    "run_list": [ "recipe[main::default]", "recipe[nginx::default]", "recipe[python::default]" ],
+    "run_list": [ "recipe[main::default]", "recipe[nginx::default]", "recipe[python::default]", "recipe[gunicorn::default]" ],
     "user": {
         "default": {
             "username": "manuel",
@@ -12,6 +12,10 @@
           "path": "/home/manuel/.virtualenvs/django-manuel",
           "owner": "manuel",
           "group": "manuel"
+        },
+        "webapp":{
+          "name": "myapp",
+          "path": "/home/manuel/projects/"
         }
   },
   "nginx": {
@@ -59,7 +63,17 @@
        }
    },
    "gunicorn":{
-       "listen": 8888,
-       "log_dir": "/var/log/gunicorn"
+       "listen": "8888",
+       "log_dir": "/var/log/gunicorn",
+       "backlog": 2048,
+       "worker_processes": 4,
+       "worker_class": "sync",
+       "worker_timeout": 45,
+       "worker_keepalive": 2,
+       "worker_max_requests": 0,
+       "server_hooks": "{}",
+       "owner": "manuel",
+       "group": "manuel",
+       "pid": "/var/run/gunicorn.pid"
     }
 }
