@@ -1,0 +1,31 @@
+; Sample supervisor config file.
+
+[unix_http_server]
+file=<%= node["python"]["supervisor"]["unix_http_server"]["file"] %>; (the path to the socket file)
+chmod=<%= node["python"]["supervisor"]["unix_http_server"]["chmod"] %>  ; socket file mode (default 0700)
+
+[supervisord]
+logfile=/tmp/supervisord.log ; (main log file;default $CWD/supervisord.log)
+logfile_maxbytes=50MB        ; (max main logfile bytes b4 rotation;default 50MB)
+logfile_backups=10           ; (num of main logfile rotation backups;default 10)
+loglevel=info                ; (log level;default info; others: debug,warn,trace)
+pidfile=/tmp/supervisord.pid ; (supervisord pidfile;default supervisord.pid)
+nodaemon=false               ; (start in foreground if true;default false)
+minfds=1024                  ; (min. avail startup file descriptors;default 1024)
+minprocs=200                 ; (min. avail process descriptors;default 200)
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[supervisorctl]
+serverurl=unix:///tmp/supervisor.sock ; use a unix:// URL  for a unix socket
+
+; The below sample program section shows all possible program subsection values,
+; create one or more 'real' program: sections to be able to control them under
+; supervisor.
+
+[program:maigfrga_template]
+command=<%= node['python']['virtualenv']['path'] %>/bin/gunicorn_django/ --config <%= node["python"]["webapp"]["path"] %><%= node["python"]["webapp"]["name"]%>.py  <%= node["python"]["webapp"]["path"] %>/myproject/settings.py
+user=<%= node['gunicorn']['user'] %>
+redirect_stderr=true
+stdout_logfile=/html/appserver/%(program_name)s.log

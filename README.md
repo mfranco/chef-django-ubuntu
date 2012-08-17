@@ -43,7 +43,7 @@ Usage
 -----
 Web stack:
 
-    $ cd chef-mint
+    $ cd chef-django-ubuntu
 
     $ sudo chef-solo -c web.rb -j web.json
 

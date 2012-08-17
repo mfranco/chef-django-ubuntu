@@ -1,10 +1,17 @@
 {
-    "run_list": [ "recipe[main::default]", "recipe[nginx::default]", "recipe[python::default]", "recipe[gunicorn::default]" ],
+    "run_list": [ "recipe[main::default]", "recipe[nginx::default]", "recipe[python::default]", "recipe[gunicorn::default]", "recipe[python::supervisor]", "recipe[repositories::default]" ],
     "user": {
         "default": {
             "username": "manuel",
             "home_directory": "/home/manuel/"
         }
+    },
+   "repositories": {
+       "path": "/home/manuel/dev/",
+       "git": [{"name": "maigfrga-template",
+                "url": "https://github.com/maigfrga/maigfrga-template.git"},
+                {"name": "django-bootstrap-scripts",
+                 "url": "https://github.com/maigfrga/django-bootstrap-scripts.git"}]
     },
    "python": {
         "virtualenv": {
@@ -16,6 +23,22 @@
         "webapp":{
           "name": "myapp",
           "path": "/home/manuel/projects/"
+        },
+        "supervisor": {
+          "unix_http_server": {
+              "file": "/tmp/supervisor.sock",
+              "chmod": "0700"
+          },
+          "supervisord":{
+             "logfile": "/tmp/supervisord.log",
+             "logfile_maxbytes": "50MB",
+             "logfile_backups": 10,
+             "loglevel": "info",
+             "pidfile": "/tmp/supervisord.pid",
+             "nodaemon": "false",
+             "minfds": 1024,
+             "minprocs": 200
+           }
         }
   },
   "nginx": {
@@ -71,7 +94,6 @@
        "worker_timeout": 45,
        "worker_keepalive": 2,
        "worker_max_requests": 0,
-       "server_hooks": "{}",
        "owner": "manuel",
        "group": "manuel",
        "pid": "/var/run/gunicorn.pid"
