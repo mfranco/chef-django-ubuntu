@@ -1,5 +1,6 @@
 {
-    "run_list": [ "recipe[main::default]", "recipe[nginx::default]", "recipe[python::default]", "recipe[gunicorn::default]", "recipe[python::supervisor]", "recipe[repositories::default]" ],
+    "run_list": [ "recipe[main::default]", "recipe[nginx::default]", "recipe[python::default]", "recipe[gunicorn::default]", "recipe[repositories::default]" ],
+    "project_directory": "/home/manuel/project_chef/",
     "user": {
         "default": {
             "username": "manuel",
@@ -7,7 +8,7 @@
         }
     },
    "repositories": {
-       "path": "/home/manuel/dev/",
+       "directory_name": "dev",
        "git": [{"name": "maigfrga-template",
                 "url": "https://github.com/maigfrga/maigfrga-template.git"},
                 {"name": "django-bootstrap-scripts",
@@ -21,8 +22,7 @@
           "group": "manuel"
         },
         "webapp":{
-          "name": "myapp",
-          "path": "/home/manuel/projects/"
+          "name": "myapp"
         },
         "supervisor": {
           "unix_http_server": {
@@ -56,7 +56,6 @@
       "daemon_disable": "true",
       "gzip_types": [
             "text/plain",
-            "text/html",
             "text/css",
             "application/x-javascript",
             "text/xml",

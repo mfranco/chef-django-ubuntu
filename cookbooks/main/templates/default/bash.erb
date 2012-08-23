@@ -12,7 +12,7 @@ alias ls='ls -h --color=auto'
 alias ll='ls -l --color=auto'
 
 # Mem. processes
-alias mempro="ps -u node["user"]["username"] -o rss,comm"
+alias mempro="ps -u <%= node['user']['default']['username'] %> -o rss,comm"
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8

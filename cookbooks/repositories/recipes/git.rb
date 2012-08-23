@@ -1,5 +1,4 @@
-dev_dir = node['repositories']['path']
-puts dev_dir
+dev_dir = node['project_directory']
 repos = node['repositories']['git'] || []
 
 repos.each do |repo|
