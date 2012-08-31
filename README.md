@@ -62,3 +62,5 @@ See also
 [Setting up Django with Green Unicorn, nginx, supervisord and fabric on CentOS 5.5](http://www.kencochrane.net/blog/2011/06/django-gunicorn-nginx-supervisord-fabric-centos55/)
 
 [Deploying Django with nginx and gunicorn](http://honza.ca/2011/05/deploying-django-with-nginx-and-gunicorn)
+
+[JasonGiedymin / nginx-init-ubuntu](https://github.com/JasonGiedymin/nginx-init-ubuntu)

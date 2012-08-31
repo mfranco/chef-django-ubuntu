@@ -1,35 +1,24 @@
-unless(node['nginx']['source']['url'])
-  node.set['nginx']['source']['url'] = "http://www.nginx.org/download/nginx-1.2.3.tar.gz"
-end
+nginx_prefix = node['nginx']['source']['prefix'] + node['nginx']['version']
 
-nginx_url = node['nginx']['source']['url']
+conf_path = node['nginx']['dir'] + '/nginx.conf'
 
-unless(node['nginx']['source']['prefix'])
-  node.set['nginx']['source']['prefix'] = "/opt/nginx-#{node['nginx']['version']}"
-end
+configure_flags = ["--prefix=" + nginx_prefix,
+                   "--conf-path=" + conf_path,
+                   "--sbin-path=" + node['nginx']['binary'],
+                   "--pid-path=" + node['nginx']['pid_path'] + node['nginx']['pid_file'],
+                   "--user=" + node['nginx']['user'],
+                   "--error-log-path=" + node["nginx"]["log_dir"] + "/error.log",
+                   "--http-log-path=" + node["nginx"]["log_dir"] + "/access.log",
+                   "--with-http_ssl_module",
+                   "--with-http_gzip_static_module"
+                  ].join(" ")
 
-nginx_prefix = node['nginx']['source']['prefix']
+puts configure_flags
 
-unless(node['nginx']['source']['conf_path'])
-  node.set['nginx']['source']['conf_path'] = "#{node['nginx']['dir']}/nginx.conf"
-end
+src_filepath =  Chef::Config['file_cache_path'] + '/nginx-' + node['nginx']['version'] + ".tar.gz"
 
-conf_path = node['nginx']['source']['conf_path']
-
-unless(node['nginx']['source']['default_configure_flags'])
-  node.set['nginx']['source']['default_configure_flags'] = [
-    "--prefix=#{node['nginx']['source']['prefix']}",
-    "--conf-path=#{node['nginx']['dir']}/nginx.conf"
-  ]
-end
-
-node.set['nginx']['binary'] = "#{node['nginx']['source']['prefix']}/sbin/nginx"
-
-node.set['nginx']['daemon_disable'] = true
-src_filepath = "#{Chef::Config['file_cache_path'] || '/tmp'}/nginx-#{node['nginx']['version']}.tar.gz"
-
-remote_file nginx_url do
-  source nginx_url
+remote_file node['nginx']['source']['url'] do
+  source node['nginx']['source']['url']
   path src_filepath
   backup false
 end
@@ -40,30 +29,45 @@ user node['nginx']['user'] do
   home "/var/www"
 end
 
-node.run_state['nginx_force_recompile'] = false
-node.run_state['nginx_configure_flags'] = node['nginx']['source']['default_configure_flags']
 
 
 node['nginx']['source']['modules'].each do |ngx_module|
   include_recipe "nginx::#{ngx_module}"
 end
 
-configure_flags = node.run_state['nginx_configure_flags']
-nginx_force_recompile = node.run_state['nginx_force_recompile']
 
 
 bash "compile_nginx_source" do
   cwd ::File.dirname(src_filepath)
   code <<-EOH
 tar zxf #{::File.basename(src_filepath)} -C #{::File.dirname(src_filepath)}
-cd nginx-#{node['nginx']['version']} && make clean && ./configure #{node.run_state['nginx_configure_flags'].join(" ")}
+cd nginx-#{node['nginx']['version']}
+make clean
+
+./configure #{configure_flags}
+
 make && make install
+
 rm -f #{node['nginx']['dir']}/nginx.conf
 EOH
+  creates node['nginx']['binary']
+  notifies :restart, "service[nginx]"
 end
 
-node.run_state.delete(:nginx_configure_flags)
-node.run_state.delete(:nginx_force_recompile)
+
+
+template "/etc/init.d/nginx" do
+    source "nginx.init.erb"
+    owner "root"
+    group "root"
+    mode "0755"
+end
+
+service "nginx" do
+    supports :status => true, :restart => true, :reload => true
+    action :enable
+end
+
 
 %w{nxensite nxdissite}.each do |nxscript|
   template "/usr/sbin/#{nxscript}" do
@@ -81,4 +85,5 @@ cookbook_file "#{node['nginx']['dir']}/mime.types" do
   owner "root"
   group "root"
   mode "0644"
+  notifies :reload, resources(:service => "nginx"), :immediately
 end
