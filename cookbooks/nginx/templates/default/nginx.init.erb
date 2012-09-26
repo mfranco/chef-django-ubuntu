@@ -199,7 +199,8 @@ start() {
     if [ "${isAlive}" -eq $TRUE ]; then
         log_end_msg $SCRIPT_ERROR
     else
-        start-stop-daemon --start --quiet --chuid \
+        echo $NGINX_CONF_FILE
+        start-stop-daemon --start -b --quiet --chuid \
         $RUNAS --pidfile $PIDSPATH/$PIDFILE --exec $DAEMON \
         -- -c $NGINX_CONF_FILE
         setFilePerms
