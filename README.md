@@ -47,6 +47,10 @@ Web stack:
 
     $ sudo chef-solo -c web.rb -j web.json
 
+Postgresq:
+    $ cd chef-django-ubuntu
+
+    $ sudo chef-solo -c web.rb -j pgdb.json
 See also
 ---------
 [Chef Solo tutorial: Managing a single server with Chef](http://www.opinionatedprogrammer.com/2011/06/chef-solo-tutorial-managing-a-single-server-with-chef/)
@@ -58,6 +62,8 @@ See also
 [ngnix cookbook](https://github.com/opscode-cookbooks/nginx)
 
 [gunicorn cookbook](https://github.com/opscode-cookbooks/gunicorn)
+
+[Postgresql cookbook](https://github.com/opscode-cookbooks/postgresql)
 
 [Setting up Django with Green Unicorn, nginx, supervisord and fabric on CentOS 5.5](http://www.kencochrane.net/blog/2011/06/django-gunicorn-nginx-supervisord-fabric-centos55/)
 

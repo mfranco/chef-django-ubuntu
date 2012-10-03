@@ -1,0 +1,16 @@
+{
+    "run_list": ["recipe[postgresql::server]"],
+    "postgresql":{
+        "version": "9.1",
+        "listen_addresses": "localhost",
+        "port": 5432,
+        "max_connections": 100,
+        "unix_socket_directory": "/var/run/postgresql",
+        "ssl": false,
+        "password": { "postgres": "12345"},
+         "database": {
+             "name": "maigfrga",
+             "user": {"username": "manuel2", "password": "manuel"}
+         }
+     }
+}
