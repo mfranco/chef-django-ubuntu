@@ -8,9 +8,17 @@
         }
     },
    "repositories": {
-       "directory_name": "dev",
+       "directory_name": "src",
        "git": [{"name": "maigfrga-template",
                 "url": "https://github.com/maigfrga/maigfrga-template.git"},
+                {"name": " nt-rackspace-cloud-servers",
+                 "url":  "https://github.com/maigfrga/nt-rackspace-cloud-servers.git"},
+                {"name": "nt-monitor",
+                 "url": "https://github.com/maigfrga/nt-monitor.git"},
+                 {"name": "nt-python-sysadmin",
+                  "url": "https://github.com/maigfrga/nt-python-sysadmin.git"},
+                {"name": "Standford-algo",
+                 "url": "https://github.com/maigfrga/Standford-algo.git"},
                 {"name": "django-bootstrap-scripts",
                  "url": "https://github.com/maigfrga/django-bootstrap-scripts.git"}]
     },
